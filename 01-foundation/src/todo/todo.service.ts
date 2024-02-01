@@ -35,10 +35,24 @@ export class TodoService {
   }
 
   update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+    const todo = this.findOne(id);
+    const { done, description } = updateTodoDto;
+
+    if (done !== undefined) todo.done = done;
+    if (description) todo.description = description;
+
+    this.todos.map(t => t.id === id ? todo : t);
+
+    return todo;
   }
 
   remove(id: number) {
-    return `This action removes a #${id} todo`;
+    const todo = this.findOne(id);
+
+    if (!todo) throw new NotFoundException(`Todo with id ${id} not found`);
+
+    this.todos = this.todos.filter(todo => todo.id !== id);
+
+    return todo;
   }
 }
