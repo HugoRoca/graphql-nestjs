@@ -2,6 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Todo {
+  id: Int!
+  description: String!
+  done: Boolean!
+}
+
 type Query {
   """A simple hello world query"""
   hello: String!
@@ -11,4 +17,31 @@ type Query {
 
   """From zero to argument to (default 6)"""
   randomFromZeroTo(to: Int): Int!
+
+  """For get all todo"""
+  todos: [Todo!]!
+
+  """For get todo by id"""
+  todo(id: Int!): Todo!
+}
+
+type Mutation {
+  """For create todo"""
+  createTodo(createTodoInput: CreateTodoInput!): Todo!
+
+  """For update todo"""
+  updateTodo(updateTodoInput: UpdateTodoInput!): Todo!
+}
+
+input CreateTodoInput {
+  """What needs to be done"""
+  description: String!
+}
+
+input UpdateTodoInput {
+  id: Int!
+
+  """What needs to be done"""
+  description: String
+  done: Boolean
 }

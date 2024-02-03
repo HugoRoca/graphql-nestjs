@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { HelloWorldModule } from './hello-world/hello-world.module';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
@@ -12,8 +13,14 @@ import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: false,
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
+      /*formatError: (err) => ({ 
+        message: err.message, 
+        status: err.extensions.code, 
+        originalError: err.extensions.originalError 
+      })*/
     }),
     HelloWorldModule,
+    TodoModule,
   ],
   controllers: [],
   providers: [],
