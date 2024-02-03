@@ -3,5 +3,12 @@
 # ------------------------------------------------------
 
 type Query {
-  helloWorld: String!
+  """A simple hello world query"""
+  hello: String!
+
+  """A simple random number query"""
+  random: Float!
+
+  """From zero to argument to (default 6)"""
+  randomFromZeroTo(to: Int): Int!
 }
