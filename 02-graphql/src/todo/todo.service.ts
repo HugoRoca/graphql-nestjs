@@ -12,6 +12,18 @@ export class TodoService {
     { id: 4, description: 'Descripction 4', done: false }
   ]
 
+  get TotalTodos(): number {
+    return this.todos.length
+  }
+
+  get PendingTodos(): number {
+    return this.todos.filter(x => !x.done).length
+  }
+
+  get CompletedTodos(): number {
+    return this.todos.filter(x => x.done).length
+  }
+
   findAll(statusArgs: StatusArgs): Todo[] {
     const { status } = statusArgs;
 

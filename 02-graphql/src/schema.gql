@@ -8,6 +8,19 @@ type Todo {
   done: Boolean!
 }
 
+"""Todo quick aggregations type"""
+type AggregationsType {
+  """Total todos"""
+  total: Int!
+
+  """Pending todos"""
+  pending: Int!
+
+  """Completed todos"""
+  completed: Int!
+  totalCompleted: Int! @deprecated(reason: "This field is deprecated, use total instead")
+}
+
 type Query {
   """A simple hello world query"""
   hello: String!
@@ -26,6 +39,18 @@ type Query {
 
   """For get todo by id"""
   todo(id: Int!): Todo!
+
+  """For count all todo"""
+  countTodos: Int!
+
+  """For count pending todo"""
+  countPendingTodos: Int!
+
+  """For count completed todo"""
+  countCompletedTodos: Int!
+
+  """For get aggregations"""
+  aggregations: AggregationsType!
 }
 
 type Mutation {
