@@ -5,7 +5,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { User } from './entities/user.entity';
-import { SignupInput } from '../auth/dto/inputs/signup.input';
+import { SignupInput } from '../auth/dto/inputs';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 
@@ -38,16 +38,42 @@ export class UsersService {
     throw new Error('Method not implemented.' + id);
   }
 
+  async findOneByEmail(email: string): Promise<User> {
+    try {
+      return await this.usersRepository.findOneOrFail({ where: { email } });
+    } catch (error) {
+      this.handleBDErrors({
+        code: 'err-0001',
+        detail: `User with email ${email} not found`,
+      });
+    }
+  }
+
+  async findOneById(id: string): Promise<User> {
+    try {
+      return await this.usersRepository.findOneOrFail({ where: { id } });
+    } catch (error) {
+      this.handleBDErrors({
+        code: 'err-0001',
+        detail: `User with id ${id} not found`,
+      });
+    }
+  }
+
   blockUser(id: string): Promise<User> {
     throw new Error('Method not implemented.' + id);
   }
 
   private handleBDErrors(error: any): never {
+    this.logger.error(error);
+
     if (error.code === '23505') {
       throw new BadRequestException(error.detail.replace('Key ', ''));
     }
 
-    this.logger.error(error);
+    if (error.code === 'err-0001') {
+      throw new BadRequestException(error.detail);
+    }
 
     throw new InternalServerErrorException('Please check server logs');
   }
