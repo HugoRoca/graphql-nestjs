@@ -42,7 +42,7 @@ export class UsersService {
   }
 
   findOne(id: string): Promise<User> {
-    throw new Error('Method not implemented.' + id);
+    return this.usersRepository.findOneBy({ id });
   }
 
   async findOneByEmail(email: string): Promise<User> {
@@ -67,8 +67,18 @@ export class UsersService {
     }
   }
 
-  blockUser(id: string): Promise<User> {
-    throw new Error('Method not implemented.' + id);
+  async blockUser(id: string, adminUser: User): Promise<User> {
+    const usertToBlock = await this.findOneById(id);
+
+    if (!usertToBlock.isActive) {
+      throw new BadRequestException('User is already blocked');
+    }
+
+    return this.usersRepository.save({
+      ...usertToBlock,
+      isActive: false,
+      lastUpdatedBy: adminUser,
+    });
   }
 
   private handleBDErrors(error: any): never {
