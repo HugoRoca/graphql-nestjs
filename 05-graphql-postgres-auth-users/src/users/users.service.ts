@@ -31,7 +31,7 @@ export class UsersService {
   }
 
   findAll(): Promise<User[]> {
-    throw new Error('Method not implemented.');
+    return this.usersRepository.find();
   }
 
   findOne(id: string): Promise<User> {
